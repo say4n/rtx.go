@@ -13,3 +13,6 @@
 
 # Built binaries
 build/
+
+# Exclude generated images
+*.ppm
