@@ -3,6 +3,8 @@ package main
 import (
 	"fmt"
 	"os"
+
+	"github.com/say4n/rtx.go/gfx"
 )
 
 func main() {
@@ -25,11 +27,9 @@ func main() {
 			g := float64(ny) / float64(width)
 			b := 0.5
 
-			ir := int(maxColor * r)
-			ig := int(maxColor * g)
-			ib := int(maxColor * b)
+			c := gfx.NewColor(int(maxColor*r), int(maxColor*g), int(maxColor*b))
 
-			fmt.Fprintf(f, "%d %d %d\n", ir, ig, ib)
+			fmt.Fprintf(f, "%d %d %d\n", c.Red, c.Green, c.Blue)
 		}
 	}
 }
