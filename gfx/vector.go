@@ -46,15 +46,23 @@ func (v *Vector3D) GetSquaredLength() float64 {
 	return x*x + y*y + z*z
 }
 
-func (v *Vector3D) Scale(scalingFactor float64) {
-	v.X *= scalingFactor
-	v.Y *= scalingFactor
-	v.Z *= scalingFactor
+func (v *Vector3D) Scale(scalingFactor float64) *Vector3D {
+	var vec Vector3D
+
+	vec.X = v.X * scalingFactor
+	vec.Y = v.Y * scalingFactor
+	vec.Z = v.Z * scalingFactor
+
+	return &vec
 }
 
-func (v *Vector3D) Normalize() {
+func (v *Vector3D) Normalize() *Vector3D {
+	var vec Vector3D
+
 	scalingFactor := 1.0 / v.GetLength()
-	v.Scale(scalingFactor)
+	vec = v.Scale(scalingFactor)
+
+	return &vec
 }
 
 func (v *Vector3D) Negate() *Vector3D {
