@@ -23,13 +23,24 @@ func main() {
 
 	for ny := 0; ny < height; ny++ {
 		for nx := 0; nx < width; nx++ {
-			r := float64(ny) / float64(height)
-			g := float64(nx) / float64(width)
-			b := 0.5
+			u := float64(nx) / float64(width)
+			v := float64(ny) / float64(height)
 
-			c := gfx.NewColor(int(maxColor*r), int(maxColor*g), int(maxColor*b))
+			start := gfx.ORIGIN
+			end := gfx.BOTTOM_LEFT.Add(
+				gfx.HORIZONTAL.Scale(u),
+			).Add(
+				gfx.VERTICAL.Scale(v),
+			)
 
-			fmt.Fprintf(f, "%d %d %d\n", c.Red, c.Green, c.Blue)
+			r := gfx.Ray{start, end}
+			c := gfx.GetColorFromRay(r)
+
+			ir := int(255.99 * c.Red)
+			ig := int(255.99 * c.Green)
+			ib := int(255.99 * c.Blue)
+
+			fmt.Fprintf(f, "%d %d %d\n", ir, ig, ib)
 		}
 	}
 }
