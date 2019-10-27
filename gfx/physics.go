@@ -14,5 +14,5 @@ func (r *Ray) GetDirection() Vector3D {
 }
 
 func (r *Ray) GetPointAtParameter(t float64) Vector3D {
-	return r.A.Add(r.B.Scale(t))
+	return *r.B.Scale(t)
 }

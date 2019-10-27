@@ -60,7 +60,7 @@ func (v *Vector3D) Normalize() *Vector3D {
 	var vec Vector3D
 
 	scalingFactor := 1.0 / v.GetLength()
-	vec = v.Scale(scalingFactor)
+	vec = *v.Scale(scalingFactor)
 
 	return &vec
 }
