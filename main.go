@@ -21,7 +21,12 @@ func main() {
 
 	fmt.Fprintf(f, "P3\n%d %d\n%d\n", width, height, int(maxColor))
 
-	for ny := 0; ny < height; ny++ {
+	world := gfx.NewWorld(2)
+
+	world.Hitlist[0] = gfx.Sphere{gfx.Vector3D{0.0, 0.0, -1.0}, 0.5}
+	world.Hitlist[1] = gfx.Sphere{gfx.Vector3D{0, -100.5, -1.0}, 100}
+
+	for ny := height - 1; ny >= 0; ny-- {
 		for nx := 0; nx < width; nx++ {
 			u := float64(nx) / float64(width)
 			v := float64(ny) / float64(height)
@@ -34,7 +39,7 @@ func main() {
 			)
 
 			r := gfx.Ray{start, end}
-			c := gfx.GetColorFromRay(r)
+			c := gfx.GetColorFromRay(r, world)
 
 			ir := int(255.99 * c.Red)
 			ig := int(255.99 * c.Green)

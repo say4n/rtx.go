@@ -1,10 +1,13 @@
 package gfx
 
+import "math"
+
 var (
 	BOTTOM_LEFT = Vector3D{-2.0, -1.0, -1.0}
 	HORIZONTAL  = Vector3D{4.0, 0.0, 0.0}
 	VERTICAL    = Vector3D{0.0, 2.0, 0.0}
 	ORIGIN      = Vector3D{0.0, 0.0, 0.0}
+	FLOATMAX    = math.MaxFloat64
 )
 
 type Ray struct {
@@ -24,31 +27,31 @@ func (r *Ray) GetPointAtParameter(t float64) Vector3D {
 	return r.B.Scale(t)
 }
 
-func GetColorFromRay(r Ray) Color {
-	direction := r.GetDirection()
-	normalized_direction := direction.Normalize()
-	t := 0.5 * (normalized_direction.GetY() + 1.0)
-
-	c1 := Color{1.0, 1.0, 1.0}.Scale(t)
-	c2 := Color{0.5, 0.7, 1.0}.Scale(1.0 - t)
-
-	if hitSphere(Vector3D{0.0, 0.0, -1.0}, 0.5, r) {
-		return Color{1.0, 0.0, 0.0}
-	}
-
-	return c1.Add(c2)
+type hitRecord struct {
+	t      float64
+	point  Vector3D
+	normal Vector3D
 }
 
-func hitSphere(center Vector3D, radius float64, ray Ray) bool {
-	origin := ray.GetOrigin()
-	direction := ray.GetDirection()
-	vector := origin.Subtract(center)
+func GetColorFromRay(r Ray, world *World) Color {
+	var hit hitRecord
 
-	a := direction.DotProduct(direction)
-	b := 2.0 * vector.DotProduct(direction)
-	c := vector.DotProduct(vector) - radius*radius
+	if world.hit(r, 0.0, FLOATMAX, &hit) {
+		normal := hit.normal
 
-	disc := b*b - 4.0*a*c
+		r := 0.5 * (normal.GetX() + 1.0)
+		g := 0.5 * (normal.GetY() + 1.0)
+		b := 0.5 * (normal.GetZ() + 1.0)
 
-	return disc > 0
+		return Color{r, g, b}
+	} else {
+		direction := r.GetDirection()
+		normalized_direction := direction.Normalize()
+		t := 0.5 * (normalized_direction.GetY() + 1.0)
+
+		c1 := Color{1.0, 1.0, 1.0}.Scale(1.0 - t)
+		c2 := Color{0.5, 0.7, 1.0}.Scale(t)
+
+		return c1.Add(c2)
+	}
 }
