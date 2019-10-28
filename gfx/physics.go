@@ -26,14 +26,15 @@ type hitRecord struct {
 func GetColorFromRay(r Ray, world *World) Color {
 	var hit hitRecord
 
-	if world.hit(r, 0.0, FLOATMAX, &hit) {
+	if world.hit(r, 0.001, FLOATMAX, &hit) {
+		point := hit.point
 		normal := hit.normal
+		target := point.Add(normal).Add(RandomPointInUnitSphere())
 
-		r := 0.5 * (normal.GetX() + 1.0)
-		g := 0.5 * (normal.GetY() + 1.0)
-		b := 0.5 * (normal.GetZ() + 1.0)
+		newRay := Ray{point, target.Subtract(point)}
+		c := GetColorFromRay(newRay, world)
 
-		return Color{r, g, b}
+		return c.Scale(0.5)
 	} else {
 		direction := r.GetDirection()
 		normalized_direction := direction.Normalize()

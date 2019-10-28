@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"math"
 	"math/rand"
 	"os"
 
@@ -38,13 +39,18 @@ func main() {
 				u := (float64(nx) + r.Float64()) / float64(width)
 				v := (float64(ny) + r.Float64()) / float64(height)
 
-				r := gfx.GetRay(u, v)
-				c := gfx.GetColorFromRay(r, world)
+				ray := gfx.GetRay(u, v)
+				c := gfx.GetColorFromRay(ray, world)
 
 				color = color.Add(c)
 			}
 
 			color = color.Divide(float64(numSamplesAA))
+
+			// gamma correction
+			color.Red = math.Sqrt(color.Red)
+			color.Green = math.Sqrt(color.Green)
+			color.Blue = math.Sqrt(color.Blue)
 
 			ir := int(255.99 * color.Red)
 			ig := int(255.99 * color.Green)
