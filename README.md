@@ -1,11 +1,12 @@
 # rtx.go
-![forthebadge](https://forthebadge.com/images/badges/made-with-go.svg)
-![forthebadge](https://forthebadge.com/images/badges/you-didnt-ask-for-this.svg)
+ray tracing from scratch, based on Peter Shirley's [book](https://raytracing.github.io/), written in Go
 
-[WIP] ray tracing from scratch
-
-## exec
+### how do I run it
 run `make` followed by `build/rtx`
 
-## author
+### what do I get
+![](assets/diffused_shading.png)
+
+### who is to blame
 &copy; 2019 Sayan Goswami
+
