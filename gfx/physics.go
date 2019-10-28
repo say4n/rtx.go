@@ -1,15 +1,5 @@
 package gfx
 
-import "math"
-
-var (
-	BOTTOM_LEFT = Vector3D{-2.0, -1.0, -1.0}
-	HORIZONTAL  = Vector3D{4.0, 0.0, 0.0}
-	VERTICAL    = Vector3D{0.0, 2.0, 0.0}
-	ORIGIN      = Vector3D{0.0, 0.0, 0.0}
-	FLOATMAX    = math.MaxFloat64
-)
-
 type Ray struct {
 	A Vector3D
 	B Vector3D

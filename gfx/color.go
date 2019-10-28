@@ -35,3 +35,13 @@ func (c1 Color) Add(c2 Color) Color {
 
 	return color
 }
+
+func (c Color) Divide(d float64) Color {
+	var color Color
+
+	color.Red = c.Red / d
+	color.Green = c.Green / d
+	color.Blue = c.Blue / d
+
+	return color
+}

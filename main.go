@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"math/rand"
 	"os"
 
 	"github.com/say4n/rtx.go/gfx"
@@ -10,6 +11,9 @@ import (
 func main() {
 	width := 400
 	height := 300
+	numSamplesAA := 100
+
+	r := rand.New(rand.NewSource(42))
 
 	maxColor := 255.99
 
@@ -28,22 +32,23 @@ func main() {
 
 	for ny := height - 1; ny >= 0; ny-- {
 		for nx := 0; nx < width; nx++ {
-			u := float64(nx) / float64(width)
-			v := float64(ny) / float64(height)
+			color := gfx.Color{0.0, 0.0, 0.0}
 
-			start := gfx.ORIGIN
-			end := gfx.BOTTOM_LEFT.Add(
-				gfx.HORIZONTAL.Scale(u),
-			).Add(
-				gfx.VERTICAL.Scale(v),
-			)
+			for s := 0; s < numSamplesAA; s++ {
+				u := (float64(nx) + r.Float64()) / float64(width)
+				v := (float64(ny) + r.Float64()) / float64(height)
 
-			r := gfx.Ray{start, end}
-			c := gfx.GetColorFromRay(r, world)
+				r := gfx.GetRay(u, v)
+				c := gfx.GetColorFromRay(r, world)
 
-			ir := int(255.99 * c.Red)
-			ig := int(255.99 * c.Green)
-			ib := int(255.99 * c.Blue)
+				color = color.Add(c)
+			}
+
+			color = color.Divide(float64(numSamplesAA))
+
+			ir := int(255.99 * color.Red)
+			ig := int(255.99 * color.Green)
+			ib := int(255.99 * color.Blue)
 
 			fmt.Fprintf(f, "%d %d %d\n", ir, ig, ib)
 		}
